@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Threat Intelligence Feed Aggregator</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🛡️ Threat Intelligence Feed Aggregator</h1>
+            <p>AI-Powered Cybersecurity Threat Monitoring & Analysis Platform</p>
+        </div>
+
+        <!-- Controls Section -->
+        <div class="controls">
+            <div class="control-group">
+                <h3>📡 Feed Management</h3>
+                <button class="btn" onclick="refreshFeeds()">Refresh All Feeds</button>
+                <button class="btn" onclick="addCustomFeed()">Add Custom Feed</button>
+                <button class="btn" onclick="exportData()">Export Data</button>
+            </div>
+
+            <div class="control-group">
+                <h3>🔍 Filters</h3>
+                <select id="severityFilter" onchange="applyFilters()"></select>
+                <select id="sourceFilter" onchange="applyFilters()"></select>
+                <select id="iocTypeFilter" onchange="applyFilters()"></select>
+                <div class="search-container">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search threats, IOCs, or keywords..." oninput="filterContent()">
+                </div>
+                <button class="btn" onclick="toggleAdvancedSearch()">Advanced Search</button>
+            </div>
+
+            <div class="control-group">
+                <h3>🤖 AI Analysis</h3>
+                <button class="btn" onclick="generateSummaries()">Generate AI Summaries</button>
+                <button class="btn" onclick="analyzeTrends()">Analyze Trends</button>
+                <button class="btn" onclick="predictThreats()">Predict Threats</button>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="feedCount">0</div>
+                <div class="stat-label">Active Feeds</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="threatCount">0</div>
+                <div class="stat-label">Threats Detected</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="iocCount">0</div>
+                <div class="stat-label">IOCs Extracted</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="highThreatCount">0</div>
+                <div class="stat-label">High Priority</div>
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <div class="content-area">
+            <div class="feed-section">
+                <div class="section-header">
+                    <h2>📰 Threat Intelligence Feeds</h2>
+                    <button class="btn" onclick="refreshFeeds()" style="width: auto; padding: 8px 16px; font-size: 0.9em;">Refresh</button>
+                </div>
+                <div id="feedContent">
+                    <div class="loading">Loading threat intelligence feeds...</div>
+                </div>
+            </div>
+
+            <div class="ioc-section">
+                <div class="section-header">
+                    <h2>🎯 Indicators of Compromise</h2>
+                    <button class="btn" onclick="extractIOCs()" style="width: auto; padding: 8px 16px; font-size: 0.9em;">Extract</button>
+                </div>
+                <div id="iocContent">
+                    <div class="loading">Extracting IOCs from feeds...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Summaries Section -->
+        <div class="content-area">
+            <div class="feed-section">
+                <div class="section-header">
+                    <h2>🤖 AI Summaries</h2>
+                </div>
+                <div id="aiContent">
+                    <div class="loading">Generating AI summaries...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
