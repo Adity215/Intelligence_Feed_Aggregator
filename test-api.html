@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test - Threat Intelligence Aggregator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+        pre {
+            background: #f8f8f8;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 API Test - Threat Intelligence Aggregator</h1>
+    
+    <div class="test-section">
+        <h2>Health Check</h2>
+        <button onclick="testHealth()">Test Health Endpoint</button>
+        <div id="health-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Feeds API</h2>
+        <button onclick="testFeeds()">Test Feeds Endpoint</button>
+        <div id="feeds-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>IOCs API</h2>
+        <button onclick="testIOCs()">Test IOCs Endpoint</button>
+        <div id="iocs-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>AI Summaries API</h2>
+        <button onclick="testAISummaries()">Test AI Summaries Endpoint</button>
+        <div id="ai-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Stats API</h2>
+        <button onclick="testStats()">Test Stats Endpoint</button>
+        <div id="stats-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Export API</h2>
+        <button onclick="testExport()">Test Export Endpoint</button>
+        <div id="export-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Refresh API</h2>
+        <button onclick="testRefresh()">Test Refresh Endpoint</button>
+        <div id="refresh-result"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api';
+
+        async function testEndpoint(endpoint, resultId) {
+            const resultDiv = document.getElementById(resultId);
+            resultDiv.innerHTML = '<span class="info">Testing...</span>';
+            
+            try {
+                const response = await fetch(`${API_BASE}${endpoint}`);
+                const data = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <span class="success">✅ Success!</span>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <span class="error">❌ Error: ${error.message}</span>
+                `;
+            }
+        }
+
+        async function testHealth() {
+            await testEndpoint('/health', 'health-result');
+        }
+
+        async function testFeeds() {
+            await testEndpoint('/feeds', 'feeds-result');
+        }
+
+        async function testIOCs() {
+            await testEndpoint('/iocs', 'iocs-result');
+        }
+
+        async function testAISummaries() {
+            await testEndpoint('/ai-summaries', 'ai-result');
+        }
+
+        async function testStats() {
+            await testEndpoint('/stats', 'stats-result');
+        }
+
+        async function testExport() {
+            const resultDiv = document.getElementById('export-result');
+            resultDiv.innerHTML = '<span class="info">Testing export...</span>';
+            
+            try {
+                const response = await fetch(`${API_BASE}/export`);
+                const data = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <span class="success">✅ Export successful!</span>
+                    <p>Data size: ${JSON.stringify(data).length} characters</p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <span class="error">❌ Export error: ${error.message}</span>
+                `;
+            }
+        }
+
+        async function testRefresh() {
+            const resultDiv = document.getElementById('refresh-result');
+            resultDiv.innerHTML = '<span class="info">Refreshing feeds...</span>';
+            
+            try {
+                const response = await fetch(`${API_BASE}/refresh`, { method: 'POST' });
+                const data = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <span class="success">✅ Refresh successful!</span>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <span class="error">❌ Refresh error: ${error.message}</span>
+                `;
+            }
+        }
+
+        // Auto-test all endpoints on page load
+        window.onload = async function() {
+            console.log('Testing all API endpoints...');
+            await testHealth();
+            await testFeeds();
+            await testIOCs();
+            await testAISummaries();
+            await testStats();
+        };
+    </script>
+</body>
+</html>
